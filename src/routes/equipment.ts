@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { redisClient } from "modules";
 import { isNonNullish } from "../helpers/data.ts";
 
+// TODO: Create class based router
 const equipmentRoute = new Hono();
 
 type PostEquipmentBody = {

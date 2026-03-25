@@ -13,9 +13,12 @@
     "redis": "npm:redis@^5.11.0",
     "routes": "./src/routes/index.ts",
     "helpers": "./src/helpers/index.ts",
+    "handlers": "./src/handlers/index.ts",
     "controllers": "./src/controllers/",
     "modules": "./src/modules/index.ts",
     "consts": "./src/constants/index.ts",
-    "socket.io": "https://deno.land/x/socket_io@0.2.1/mod.ts"
+    "socket.io": "https://deno.land/x/socket_io@0.2.1/mod.ts",
+    "@types": "./src/@types/index.ts",
+    "sequelize": "npm:sequelize@^6.37.8"
   }
 }
