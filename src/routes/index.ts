@@ -1,9 +1,6 @@
 import * as path from "@std/path";
 import { isNonNullish } from "helpers";
 import { Hono } from "hono";
-// import equipmentRoutes from "./equipment.ts";
-// Deno.readDirSync()
-//
 
 export class Router {
   private routes: Array<string> = [];
@@ -16,23 +13,25 @@ export class Router {
   }
 
   async initiateRoutes() {
-    for (const route of this.routes) {
-      const filePath = path.relative(
-        path.resolve(Deno.cwd(), "src", "routes"),
-        route,
-      );
-      const dirPath = path.dirname(filePath);
-      const module = await import(`./${filePath}`).then((v) => v.default);
+    await Promise.all(
+      this.routes.map(async (route) => {
+        const filePath = path.relative(
+          path.resolve(Deno.cwd(), "src", "routes"),
+          route,
+        );
+        const dirPath = path.dirname(filePath);
+        const module = await import(`./${filePath}`).then((v) => v.default);
 
-      if (module instanceof Hono) {
-        const filename = this.getFilename(filePath);
-        if (dirPath === ".") {
-          this.apiRoute.route(`/${filename}`, module);
-        } else {
-          this.apiRoute.route(`/${dirPath}`, module);
+        if (typeof module === "function") {
+          const filename = this.getFilename(filePath);
+          if (dirPath === ".") {
+            this.apiRoute.route(`/${filename}`, module());
+          } else {
+            this.apiRoute.route(`/${dirPath}`, module());
+          }
         }
-      }
-    }
+      }),
+    );
   }
 
   private checkDir(dirPath?: string) {

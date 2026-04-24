@@ -18,7 +18,10 @@
     "modules": "./src/modules/index.ts",
     "consts": "./src/constants/index.ts",
     "socket.io": "https://deno.land/x/socket_io@0.2.1/mod.ts",
-    "@types": "./src/@types/index.ts",
+    "types": "./src/@types/index.ts",
     "sequelize": "npm:sequelize@^6.37.8"
+    "app": "./src/app.ts",
+    "errors": "./src/errors/index.ts"
+    "classes/bases": "./src/classes/bases/index.ts"
   }
 }

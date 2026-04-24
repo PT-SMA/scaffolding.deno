@@ -4,11 +4,11 @@
  */
 
 export abstract class BaseHandler {
-  abstract type: "socket.io" | "general";
+  abstract type: "socket.io" | "general" | "error";
 
   constructor() {
     this.handle = this.handle.bind(this);
   }
 
-  abstract handle(data: unknown): void;
+  abstract handle(...args: unknown[]): void | unknown;
 }
