@@ -1,12 +1,14 @@
 import * as path from "@std/path";
 import { isNonNullish } from "helpers";
 import { Hono } from "hono";
+import { RouteFactory, TModelInstances } from "types";
+import { createModels } from "models";
 
 export class Router {
   private routes: Array<string> = [];
   apiRoute = new Hono().basePath("/api");
   routers: Array<Hono> = [];
-  constructor() {
+  constructor(private models: TModelInstances) {
     this.checkDir();
 
     this.initiateRoutes = this.initiateRoutes.bind(this);
@@ -19,15 +21,16 @@ export class Router {
           path.resolve(Deno.cwd(), "src", "routes"),
           route,
         );
-        const dirPath = path.dirname(filePath);
-        const module = await import(`./${filePath}`).then((v) => v.default);
+        const module: RouteFactory | undefined = await import(`./${filePath}`)
+          .then((v) => v.default);
 
         if (typeof module === "function") {
           const filename = this.getFilename(filePath);
-          if (dirPath === ".") {
-            this.apiRoute.route(`/${filename}`, module());
-          } else {
-            this.apiRoute.route(`/${dirPath}`, module());
+
+          try {
+            this.apiRoute.route(`/${filename}`, module(this.models));
+          } catch (e) {
+            console.error(e, filename);
           }
         }
       }),
@@ -50,7 +53,9 @@ export class Router {
         const filePath = path.join(cwd, file.name);
         this.routes.push(filePath);
       } else if (!file.isFile && file.isDirectory) {
-        this.checkDir(file.name);
+        this.checkDir(
+          isNonNullish(dirPath) ? path.join(dirPath, file.name) : file.name,
+        );
       }
     }
   }
@@ -65,5 +70,5 @@ export class Router {
 
 // debug only
 if (import.meta.main) {
-  new Router();
+  new Router(createModels());
 }

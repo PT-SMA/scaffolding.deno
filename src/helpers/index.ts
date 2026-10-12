@@ -1,1 +1,1 @@
-export { isNonNullish } from "./data.ts";
+export * from "./data.ts";

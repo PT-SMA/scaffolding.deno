@@ -1,41 +1,21 @@
 import { Hono } from "hono";
-import { redisClient } from "modules";
-import { isNonNullish } from "../helpers/data.ts";
+import { apiKey } from "middlewares";
+import { AppEnv, PostEquipmentBody, TModelInstances } from "types";
+import { EquipmentUtil } from "utils";
+import { isNonNullish } from "helpers";
 
-// TODO: Create class based router
+export default function createEquipmentRoute(_models: TModelInstances) {
+  const equipmentRoute = new Hono<AppEnv>();
+  const equipmentUtil = new EquipmentUtil();
 
-type PostEquipmentBody = {
-  latitude: number;
-  longitude: number;
-  type: string;
-  hull_number: string;
-  checkDist?: boolean;
-};
-
-export type RedisEquipmentRadius = {
-  member: string;
-  distance?: string | undefined;
-  hash?: number | undefined;
-  coordinates?:
-    | {
-        longitude: number;
-        latitude: number;
-      }
-    | undefined;
-};
-
-export default function createEquipmentRoute() {
-  const equipmentRoute = new Hono();
   equipmentRoute.get("/", async (c) => {
-    const excas = await redisClient.geoRadiusWith(
-      "Excavator",
+    const excas = await equipmentUtil.getNearby(
       {
         longitude: 121.8117801607159,
         latitude: -3.0019732368024847,
       },
       80,
       "km",
-      ["WITHCOORD", "WITHDIST"],
     );
 
     return c.json({
@@ -43,39 +23,30 @@ export default function createEquipmentRoute() {
     });
   });
 
-  equipmentRoute.get("/data", (c) => {
-    return c.json({
-      message: "/data",
-    });
-  });
-
-  equipmentRoute.post("/", async (c) => {
+  equipmentRoute.post("/", apiKey, async (c) => {
     const body = await c.req.json<PostEquipmentBody>();
 
-    let res: number | Array<RedisEquipmentRadius> = 0;
-
     if (isNonNullish(body.checkDist) && body.checkDist) {
-      res = await redisClient.geoRadiusWith(
-        "Excavator",
+      const nearby = await equipmentUtil.getNearby(
         {
           latitude: body.latitude,
           longitude: body.longitude,
         },
         10,
         "m",
-        ["WITHDIST", "WITHCOORD"],
       );
-    } else {
-      res = await redisClient.geoAdd(body.type, {
-        latitude: body.latitude,
-        longitude: body.longitude,
-        member: body.hull_number,
+
+      return c.json({
+        data: nearby,
+        status: false,
       });
     }
 
+    const added = await equipmentUtil.addPosition(body);
+
     return c.json({
-      data: res,
-      status: res === 1,
+      data: added,
+      status: added === 1,
     });
   });
 

@@ -4,6 +4,7 @@
     "jsr:@hono/hono@^4.12.7": "4.12.7",
     "jsr:@std/internal@^1.0.12": "1.0.12",
     "jsr:@std/path@^1.1.4": "1.1.4",
+    "npm:pg@^8.22.0": "8.23.0",
     "npm:redis@^5.11.0": "5.11.0",
     "npm:sequelize@^6.37.8": "6.37.8"
   },
@@ -101,8 +102,67 @@
     "ms@2.1.3": {
       "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="
     },
-    "pg-connection-string@2.12.0": {
-      "integrity": "sha512-U7qg+bpswf3Cs5xLzRqbXbQl85ng0mfSV/J0nnA31MCLgvEaAo7CIhmeyrmJpOr7o+zm0rXK+hNnT5l9RHkCkQ=="
+    "pg-cloudflare@1.4.0": {
+      "integrity": "sha512-Vo7z/6rrQYxpNRylp4Tlob2elzbh+N/MOQbxFVWCxS7oEx6jF53GTJFxK2WWpKuBRkmiin4Mt+xofFDjx09R0A=="
+    },
+    "pg-connection-string@2.14.0": {
+      "integrity": "sha512-XwWDGcLRGCXAR8F/AM5bG7Q+A3Wm2s6QeEjlOKZLlH3UYcguiqCWKyWXVag5TLTIjR7oOJUY8kcADaZgWPyLeg=="
+    },
+    "pg-int8@1.0.1": {
+      "integrity": "sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw=="
+    },
+    "pg-pool@3.14.0_pg@8.23.0": {
+      "integrity": "sha512-gKtPkFdQPU3DksooVLi9LsjZxrsBUZIpa+7aVx+LV5pNh0KzP4Zleud2po+ConrxbuXGBJ6Hfer6hdgpIBpBaw==",
+      "dependencies": [
+        "pg"
+      ]
+    },
+    "pg-protocol@1.16.0": {
+      "integrity": "sha512-sILXutLVjCLjcDuOmvhX5e2Z4cS5qG/6Bu3VkpFwdf/633ElGLpEh9bgmuI5I4sqKqkifQiGyiCcx1HdtrK7tg=="
+    },
+    "pg-types@2.2.0": {
+      "integrity": "sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==",
+      "dependencies": [
+        "pg-int8",
+        "postgres-array",
+        "postgres-bytea",
+        "postgres-date",
+        "postgres-interval"
+      ]
+    },
+    "pg@8.23.0": {
+      "integrity": "sha512-Ip2EQCngowJLGOfCwkFhPXU7/ljlhn6Rxlmy4XYfL2Y+vyRM59+8uR2xqRWKdYmbXmxCFOAmKxBuSUCdF34qLg==",
+      "dependencies": [
+        "pg-connection-string",
+        "pg-pool",
+        "pg-protocol",
+        "pg-types",
+        "pgpass"
+      ],
+      "optionalDependencies": [
+        "pg-cloudflare"
+      ]
+    },
+    "pgpass@1.0.5": {
+      "integrity": "sha512-FdW9r/jQZhSeohs1Z3sI1yxFQNFvMcnmfuj4WBMUTxOrAyLMaTcE1aAMBiTlbMNaXvBCQuVi0R7hd8udDSP7ug==",
+      "dependencies": [
+        "split2"
+      ]
+    },
+    "postgres-array@2.0.0": {
+      "integrity": "sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA=="
+    },
+    "postgres-bytea@1.0.1": {
+      "integrity": "sha512-5+5HqXnsZPE65IJZSMkZtURARZelel2oXUEO8rH83VS/hxH5vv1uHquPg5wZs8yMAfdv971IU+kcPUczi7NVBQ=="
+    },
+    "postgres-date@1.0.7": {
+      "integrity": "sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q=="
+    },
+    "postgres-interval@1.2.0": {
+      "integrity": "sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==",
+      "dependencies": [
+        "xtend"
+      ]
     },
     "redis@5.11.0": {
       "integrity": "sha512-YwXjATVDT+AuxcyfOwZn046aml9jMlQPvU1VXIlLDVAExe0u93aTfPYSeRgG4p9Q/Jlkj+LXJ1XEoFV+j2JKcQ==",
@@ -145,6 +205,9 @@
         "wkx"
       ]
     },
+    "split2@4.2.0": {
+      "integrity": "sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg=="
+    },
     "toposort-class@1.0.1": {
       "integrity": "sha512-OsLcGGbYF3rMjPUf8oKktyvCiUxSbqMMS39m33MAjLTC1DVIH6x3WSt63/M77ihI09+Sdfk1AXvfhCEeUmC7mg=="
     },
@@ -153,6 +216,7 @@
     },
     "uuid@8.3.2": {
       "integrity": "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==",
+      "deprecated": true,
       "bin": true
     },
     "validator@13.15.35": {
@@ -163,6 +227,9 @@
       "dependencies": [
         "@types/node"
       ]
+    },
+    "xtend@4.0.2": {
+      "integrity": "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ=="
     }
   },
   "remote": {
@@ -249,6 +316,7 @@
     "https://deno.land/x/socket_io@0.2.1/packages/socket.io/mod.ts": "dfd465bdcf23161af0c4d79fb8fc8912418c46a20d15e8b314cec6d9fb508196",
     "https://deno.land/x/socket_io@0.2.1/test_deps.ts": "42e6bff240c54a2d7ade82154f8655650664a65ad9228623a0fdb3d0cde11ef0",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/backoff.ts": "33e4a6e245f8743fbae0ce583993a671a3ac2ecee433a3e7f0bd77b5dd541d84",
+    "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/command.ts": "802df3a1f49f6c49fe3e8fcf13fd0cc360b8a02369de0310a72d7f0c8e4ceaab",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/connection.ts": "b325d5b720af8132cd81d6d8b6a2e61936631b36d0dd08907d5421107bf50723",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/errors.ts": "bc8f7091cb9f36cdd31229660e0139350b02c26851e3ac69d592c066745feb27",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/executor.ts": "03e5f43df4e0c9c62b0e1be778811d45b6a1966ddf406e21ed5a227af70b7183",
@@ -258,6 +326,7 @@
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/protocol/command.ts": "b1efd3b62fe5d1230e6d96b5c65ba7de1592a1eda2cc927161e5997a15f404ac",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/protocol/mod.ts": "f2601df31d8adc71785b5d19f6a7e43dfce94adbb6735c4dafc1fb129169d11a",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/protocol/reply.ts": "beac2061b03190bada179aef1a5d92b47a5104d9835e8c7468a55c24812ae9e4",
+    "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/protocol/types.ts": "40b0a568cb7fd4dc9107997062584d24e5c6ffa1f21acb6410aa19c92f89e9e1",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/pubsub.ts": "324b87dae0700e4cb350780ce3ae5bc02780f79f3de35e01366b894668b016c6",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/redis.ts": "a5c2cf8c72e7c92c9c8c6911f98227062649f6cba966938428c5414200f3aa54",
     "https://deno.land/x/socket_io@0.2.1/vendor/deno.land/x/redis@v0.27.1/stream.ts": "f116d73cfe04590ff9fa8a3c08be8ff85219d902ef2f6929b8c1e88d92a07810",
@@ -269,6 +338,7 @@
     "dependencies": [
       "jsr:@hono/hono@^4.12.7",
       "jsr:@std/path@^1.1.4",
+      "npm:pg@^8.22.0",
       "npm:redis@^5.11.0",
       "npm:sequelize@^6.37.8"
     ]

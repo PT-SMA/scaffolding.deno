@@ -1,1 +1,1 @@
-// export type GlobalErrorHandlerCallback = (error: Error)
+export type HandlerType = "socket.io" | "general" | "error";

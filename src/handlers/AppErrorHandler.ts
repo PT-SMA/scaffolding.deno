@@ -1,10 +1,11 @@
 import { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { NotFoundError } from "errors";
+import { BaseError } from "errors";
 import { BaseHandler } from "classes/bases";
+import { HandlerType } from "types";
 
 export class AppErrorHandler extends BaseHandler {
-  override type: "socket.io" | "general" | "error" = "error";
+  override type: HandlerType = "error";
 
   constructor() {
     super();
@@ -28,7 +29,7 @@ export class AppErrorHandler extends BaseHandler {
       case err instanceof HTTPException: {
         return err.getResponse();
       }
-      case err instanceof NotFoundError: {
+      case err instanceof BaseError: {
         return c.json(
           {
             errors: [

@@ -1,9 +1,10 @@
 import { HTTPException } from "hono/http-exception";
-import { NotFoundError } from "errors";
+import { BaseError } from "errors";
 import { BaseHandler } from "classes/bases";
+import { HandlerType } from "types";
 
 export class GlobalErrorHandler extends BaseHandler {
-  override type: "socket.io" | "general" | "error" = "error";
+  override type: HandlerType = "error";
 
   constructor() {
     super();
@@ -16,12 +17,14 @@ export class GlobalErrorHandler extends BaseHandler {
         console.log(`[${date}]: ${err.message}`);
         break;
       }
-      case err instanceof NotFoundError: {
+      case err instanceof BaseError: {
         console.log(`[${date}]: ${err.message}`);
         break;
       }
       case err instanceof Error: {
-        console.log(`[${date}]: ${err.message}`);
+        // full error, not just `message` — e.g. Sequelize's
+        // ConnectionRefusedError has an empty message
+        console.error(`[${date}]:`, err);
         break;
       }
 

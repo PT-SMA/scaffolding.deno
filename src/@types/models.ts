@@ -1,8 +1,9 @@
 import {
-  Model,
+  CreationOptional,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
+  Model,
+  Sequelize,
 } from "sequelize";
 
 export type SequelizeNullishString = CreationOptional<string | null>;
@@ -10,7 +11,6 @@ export type SequelizeNullishNumber = CreationOptional<number | null>;
 export type SequelizeNullishBool = CreationOptional<boolean | null>;
 
 /**
- *
  * Base type for creating sequelize models
  * example:
  * ```typescript
@@ -22,12 +22,21 @@ export type SequelizeNullishBool = CreationOptional<boolean | null>;
  * ```typescript
  * export type ExampleInstance = ModelCtor<ExampleModel>;
  * ```
- *
  */
-export type SequelizeModels<T extends Model> = Model<
-  InferAttributes<T>,
-  InferCreationAttributes<T>
-> & {
-  created_at: string;
-  updated_at: SequelizeNullishString;
+export type SequelizeModels<T extends Model> =
+  & Model<
+    InferAttributes<T>,
+    InferCreationAttributes<T>
+  >
+  & {
+    created_at: string;
+    updated_at: SequelizeNullishString;
+  };
+
+/**
+ * Everything `createModels()` returns. Add each model's ctor here as it is
+ * created, e.g. `Example: ExampleInstance;`
+ */
+export type TModelInstances = {
+  sequelize: Sequelize;
 };

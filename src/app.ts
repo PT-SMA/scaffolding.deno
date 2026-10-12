@@ -1,9 +1,11 @@
 import { Hono } from "hono";
 import { Router } from "routes";
 import { redisClient } from "modules";
+import { createModels } from "models";
 import { Server } from "socket.io";
 import { cors } from "hono/cors";
-import { AppErrorHandler } from "handlers";
+import { AppErrorHandler, SocketHandler } from "handlers";
+import { DB_ALTER } from "consts";
 
 export class MainApp {
   name = "scaffolding.deno"; // <- change this with the app's name
@@ -14,18 +16,24 @@ export class MainApp {
     },
   });
   private errorHandler = new AppErrorHandler();
+  private models = createModels();
 
   constructor() {
+    this.init = this.init.bind(this);
     this.initRoutes = this.initRoutes.bind(this);
-    this.redisInit = this.redisInit.bind(this);
+    this.initRedis = this.initRedis.bind(this);
+    this.initDB = this.initDB.bind(this);
+  }
 
+  async init() {
+    await this.initRedis();
     this.initSocket();
-    this.initRoutes();
-    this.redisInit();
+    await this.initDB();
+    await this.initRoutes();
   }
 
   private async initRoutes() {
-    const router = new Router();
+    const router = new Router(this.models);
     await router.initiateRoutes();
 
     this.app.use(
@@ -48,17 +56,22 @@ export class MainApp {
 
   private initSocket() {
     this.io.on("connection", (socket) => {
-      console.log(socket.id);
-
-      socket.on("disconnect", (reason) => {
-        console.log(reason, "disconnect reason");
-      });
+      const handler = new SocketHandler(socket);
+      handler.handle();
     });
   }
 
-  private async redisInit() {
-    await redisClient.connect();
+  private async initRedis() {
     redisClient.on("error", (err) => console.error("Redis error:", err));
+    await redisClient.connect();
+  }
+
+  private async initDB() {
+    if (DB_ALTER) {
+      await this.models.sequelize.sync({ alter: true });
+    } else {
+      await this.models.sequelize.authenticate({ logging: false });
+    }
   }
 
   handler = this.io.handler(async (req) => {
