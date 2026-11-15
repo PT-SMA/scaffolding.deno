@@ -1,0 +1,24 @@
+{
+  "name": "scaffolding.bun",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun main.ts",
+    "dev": "bun --watch main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@socket.io/bun-engine": "^0.1.2",
+    "@socket.io/redis-adapter": "^8.3.0",
+    "hono": "^4.12.7",
+    "pg": "^8.22.0",
+    "redis": "^5.11.0",
+    "sequelize": "^6.37.8",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "@types/pg": "^8.23.1",
+    "typescript": "^7.0.2"
+  }
+}

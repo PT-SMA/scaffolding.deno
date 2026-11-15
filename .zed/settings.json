@@ -1,0 +1,47 @@
+// Zed project settings — overrides the global (Deno-oriented) setup for this
+// Bun project. See https://zed.dev/docs/configuring-zed#settings-files
+{
+  "languages": {
+    "TypeScript": {
+      "language_servers": [
+        "vtsls",
+        "!deno",
+        "!typescript-language-server",
+        "!eslint",
+        "..."
+      ],
+      "formatter": "prettier"
+    },
+    "TSX": {
+      "language_servers": [
+        "vtsls",
+        "!deno",
+        "!typescript-language-server",
+        "!eslint",
+        "..."
+      ],
+      "formatter": "prettier"
+    }
+  },
+  "lsp": {
+    "deno": {
+      "settings": {
+        "deno": {
+          "enable": false
+        }
+      }
+    },
+    "vtsls": {
+      "settings": {
+        // The project's TypeScript 7 (native) has no tsserver.js, so vtsls
+        // uses its bundled TypeScript; `bun run typecheck` runs TS 7.
+        "vtsls": {
+          "autoUseWorkspaceTsdk": false
+        }
+      }
+    }
+  },
+  "inlay_hints": {
+    "enabled": false
+  }
+}
