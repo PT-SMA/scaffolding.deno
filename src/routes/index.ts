@@ -1,4 +1,5 @@
-import * as path from "@std/path";
+import * as path from "node:path";
+import { readdirSync } from "node:fs";
 import { isNonNullish } from "helpers";
 import { Hono } from "hono";
 import { RouteFactory, TModelInstances } from "types";
@@ -17,10 +18,7 @@ export class Router {
   async initiateRoutes() {
     await Promise.all(
       this.routes.map(async (route) => {
-        const filePath = path.relative(
-          path.resolve(Deno.cwd(), "src", "routes"),
-          route,
-        );
+        const filePath = path.relative(import.meta.dir, route);
         const module: RouteFactory | undefined = await import(`./${filePath}`)
           .then((v) => v.default);
 
@@ -38,21 +36,20 @@ export class Router {
   }
 
   private checkDir(dirPath?: string) {
-    const routeBasePath = path.fromFileUrl(import.meta.url);
-    let cwd = path.dirname(routeBasePath);
+    let cwd = import.meta.dir;
     if (isNonNullish(dirPath)) {
-      cwd = path.join(path.dirname(routeBasePath), dirPath);
+      cwd = path.join(import.meta.dir, dirPath);
     }
 
-    const files = Array.from(Deno.readDirSync(cwd)).filter(
+    const files = readdirSync(cwd, { withFileTypes: true }).filter(
       (file) => file.name !== "index.ts",
     );
 
     for (const file of files) {
-      if (file.isFile) {
+      if (file.isFile()) {
         const filePath = path.join(cwd, file.name);
         this.routes.push(filePath);
-      } else if (!file.isFile && file.isDirectory) {
+      } else if (file.isDirectory()) {
         this.checkDir(
           isNonNullish(dirPath) ? path.join(dirPath, file.name) : file.name,
         );
